@@ -124,6 +124,12 @@
             color: var(--profit-color);
         }
 
+        .total-loss {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--loss-color);
+        }
+
         .portfolio-table {
             width: 100%;
             border-collapse: collapse;
@@ -153,6 +159,11 @@
 
         .profit {
             color: var(--profit-color);
+            font-weight: bold;
+        }
+
+        .loss {
+            color: var(--loss-color);
             font-weight: bold;
         }
 
@@ -403,22 +414,22 @@
     </div>
 
     <script>
-        // Konfigurasi Firebase (ganti dengan konfigurasi project Firebase Anda)
+        // KONFIGURASI FIREBASE - DARI PROJECT ANDA
         const firebaseConfig = {
-            apiKey: "AIzaSyDUoQk4VxHkz3kLp1jv6X7Z2f8YwM9nBcD",
-            authDomain: "trading-portfolio-12345.firebaseapp.com",
-            databaseURL: "https://trading-portfolio-12345-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "trading-portfolio-12345",
-            storageBucket: "trading-portfolio-12345.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcd1234efgh5678ijkl90"
+            apiKey: "AIzaSyCv2QUf-0iPclrUDj_xjbTjiWF7AfNZsZc",
+            authDomain: "trading-portofolio-6c778.firebaseapp.com",
+            databaseURL: "https://trading-portofolio-6c778-default-rtdb.asia-southeast1.firebasedatabase.app", // PASTIKAN INI BENAR
+            projectId: "trading-portofolio-6c778",
+            storageBucket: "trading-portofolio-6c778.firebasestorage.app",
+            messagingSenderId: "136102612739",
+            appId: "1:136102612739:web:0ea394f8208bfe5ee6e336"
         };
 
         // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Data password admin (disimpan di Firebase untuk keamanan lebih baik)
+        // Data password admin
         const ADMIN_PASSWORD = "admin123";
 
         // Elemen DOM
@@ -431,7 +442,6 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const dataForm = document.getElementById('dataForm');
         const portfolioData = document.getElementById('portfolioData');
-        const addRowBtn = document.getElementById('addRowBtn');
         const totalProfitElem = document.getElementById('totalProfit');
         const actionHeader = document.getElementById('actionHeader');
 
@@ -496,7 +506,7 @@
                 nomor,
                 tanggal: formattedDate,
                 profit: profitValue,
-                keuntungan
+                keuntungan: parseFloat(keuntungan) // Pastikan ini adalah angka, bukan string
             };
             
             // Simpan ke Firebase
@@ -515,6 +525,26 @@
 
         // Fungsi untuk merender data portofolio
         function renderPortfolioData(items) {
+            // Jika tidak ada parameter items, ambil dari Firebase
+            if (!items) {
+                database.ref('portfolioItems').once('value')
+                    .then((snapshot) => {
+                        const data = snapshot.val();
+                        renderPortfolioData(data);
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching data:', error);
+                        portfolioData.innerHTML = `
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem; color: var(--accent-color);">
+                                    <i class="fas fa-exclamation-triangle"></i> Gagal memuat data. Periksa koneksi internet Anda.
+                                </td>
+                            </tr>
+                        `;
+                    });
+                return;
+            }
+            
             portfolioData.innerHTML = '';
             
             if (!items || Object.keys(items).length === 0) {
@@ -526,6 +556,7 @@
                     </tr>
                 `;
                 totalProfitElem.textContent = 'Rp0';
+                totalProfitElem.className = 'total-profit';
                 return;
             }
             
@@ -579,8 +610,8 @@
                         <td></td>
                         <td>${item.nomor}</td>
                         <td>${item.tanggal}</td>
-                        <td class="profit">Rp${formatNumber(item.profit)}</td>
-                        <td>${item.keuntungan}%</td>
+                        <td class="${item.profit >= 0 ? 'profit' : 'loss'}">${item.profit >= 0 ? 'Rp' : '-Rp'}${formatNumber(Math.abs(item.profit))}</td>
+                        <td class="${item.keuntungan >= 0 ? 'profit' : 'loss'}">${item.keuntungan >= 0 ? '+' : ''}${item.keuntungan}%</td>
                         <td class="delete-btn" onclick="deleteItem('${item.id}')">
                             <i class="fas fa-trash"></i>
                         </td>
@@ -590,15 +621,17 @@
                         <td></td>
                         <td>${item.nomor}</td>
                         <td>${item.tanggal}</td>
-                        <td class="profit">Rp${formatNumber(item.profit)}</td>
-                        <td>${item.keuntungan}%</td>
+                        <td class="${item.profit >= 0 ? 'profit' : 'loss'}">${item.profit >= 0 ? 'Rp' : '-Rp'}${formatNumber(Math.abs(item.profit))}</td>
+                        <td class="${item.keuntungan >= 0 ? 'profit' : 'loss'}">${item.keuntungan >= 0 ? '+' : ''}${item.keuntungan}%</td>
                     `;
                 }
                 
                 portfolioData.appendChild(row);
             });
             
-            totalProfitElem.textContent = `Rp${formatNumber(totalProfit)}`;
+            // Update total profit
+            totalProfitElem.textContent = `${totalProfit >= 0 ? 'Rp' : '-Rp'}${formatNumber(Math.abs(totalProfit))}`;
+            totalProfitElem.className = totalProfit >= 0 ? 'total-profit' : 'total-loss';
         }
 
         // Fungsi untuk menghapus item
