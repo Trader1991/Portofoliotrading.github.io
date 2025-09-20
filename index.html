@@ -122,6 +122,7 @@
         .portfolio-table th {
             background-color: var(--primary-color);
             color: white;
+            font-weight: bold;
         }
 
         .portfolio-table tr:nth-child(even) {
@@ -283,6 +284,16 @@
             .portfolio-table td {
                 padding: 0.5rem;
             }
+        }
+
+        /* Styling untuk data yang digabung */
+        .grouped-row {
+            background-color: #e8f4fc;
+            font-weight: bold;
+        }
+        
+        .grouped-row td {
+            border-bottom: 2px solid var(--secondary-color);
         }
     </style>
 </head>
@@ -477,17 +488,37 @@
                 return;
             }
             
-            // Urutkan berdasarkan nomor
-            portfolioItems.sort((a, b) => a.nomor - b.nomor);
+            // Urutkan berdasarkan modal kemudian nomor
+            portfolioItems.sort((a, b) => {
+                if (a.modal !== b.modal) {
+                    return b.modal - a.modal; // Modal terbesar pertama
+                }
+                return a.nomor - b.nomor; // Kemudian urutkan berdasarkan nomor
+            });
             
             let totalProfit = 0;
+            let currentModal = null;
             
             portfolioItems.forEach(item => {
                 totalProfit += item.profit;
                 
+                // Jika modal berbeda dengan sebelumnya, tambahkan baris grup
+                if (item.modal !== currentModal) {
+                    currentModal = item.modal;
+                    
+                    const groupRow = document.createElement('tr');
+                    groupRow.className = 'grouped-row';
+                    groupRow.innerHTML = `
+                        <td>Rp${formatNumber(item.modal)}</td>
+                        <td colspan="5">Data trading dengan modal Rp${formatNumber(item.modal)}</td>
+                    `;
+                    
+                    portfolioData.appendChild(groupRow);
+                }
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>Rp${formatNumber(item.modal)}</td>
+                    <td></td>
                     <td>${item.nomor}</td>
                     <td>${item.tanggal}</td>
                     <td class="profit">Rp${formatNumber(item.profit)}</td>
