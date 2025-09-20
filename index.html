@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Trading</title>
+    <style>
+        /* CSS Reset dan Variabel */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Portfolio Section */
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .profit {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--accent-color);
+        }
+
+        /* Form Styles */
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">TradingPortfolio</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#add-profit">Tambah Profit</a></li>
+                        <li><a href="#about">Tentang</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Portofolio Trading Saya</h1>
+            <p>Pantau dan kelajar perkembangan investasi trading Anda dengan mudah</p>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title">Portofolio Saya</h2>
+            <div class="portfolio-grid" id="portfolio-container">
+                <!-- Portfolio items will be added here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <section id="add-profit" class="section">
+        <div class="container">
+            <h2 class="section-title">Tambah Data Profit</h2>
+            <div class="form-section">
+                <form id="profit-form">
+                    <div class="form-group">
+                        <label for="asset-name">Nama Aset</label>
+                        <input type="text" id="asset-name" required placeholder="Contoh: BTC, TSLA, AAPL">
+                    </div>
+                    <div class="form-group">
+                        <label for="investment-type">Jenis Investasi</label>
+                        <select id="investment-type" required>
+                            <option value="">Pilih Jenis</option>
+                            <option value="saham">Saham</option>
+                            <option value="crypto">Cryptocurrency</option>
+                            <option value="forex">Forex</option>
+                            <option value="komoditas">Komoditas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="buy-price">Harga Beli ($)</label>
+                        <input type="number" id="buy-price" step="0.01" required placeholder="Harga per unit saat beli">
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-price">Harga Jual ($)</label>
+                        <input type="number" id="sell-price" step="0.01" required placeholder="Harga per unit saat jual">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Jumlah Unit</label>
+                        <input type="number" id="quantity" required placeholder="Jumlah unit yang dibeli">
+                    </div>
+                    <button type="submit">Hitung & Simpan Profit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">Tentang Portfolio Ini</h2>
+            <div class="form-section">
+                <p>Website ini membantu Anda melacak performa trading dan investasi. Simpan catatan profit/loss dan pantau perkembangan portfolio Anda secara visual.</p>
+                <p>Data disimpan secara lokal di browser Anda, sehingga hanya dapat diakses dari perangkat ini.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 TradingPortfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fungsi untuk menangani form profit
+        document.getElementById('profit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const assetName = document.getElementById('asset-name').value;
+            const investmentType = document.getElementById('investment-type').value;
+            const buyPrice = parseFloat(document.getElementById('buy-price').value);
+            const sellPrice = parseFloat(document.getElementById('sell-price').value);
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            // Hitung profit/loss
+            const profit = (sellPrice - buyPrice) * quantity;
+            const profitPercentage = ((sellPrice - buyPrice) / buyPrice) * 100;
+            
+            // Buat objek transaksi
+            const transaction = {
+                id: Date.now(), // ID unik berdasarkan timestamp
+                assetName,
+                investmentType,
+                buyPrice,
+                sellPrice,
+                quantity,
+                profit,
+                profitPercentage,
+                date: new Date().toLocaleDateString('id-ID')
+            };
+            
+            // Simpan ke localStorage
+            saveTransaction(transaction);
+            
+            // Tambahkan ke tampilan portfolio
+            addTransactionToPortfolio(transaction);
+            
+            // Reset form
+            document.getElementById('profit-form').reset();
+            
+            // Tampilkan notifikasi
+            alert(`Data profit untuk ${assetName} berhasil disimpan!`);
+        });
+        
+        // Fungsi untuk menyimpan transaksi ke localStorage
+        function saveTransaction(transaction) {
+            let transactions = JSON.parse(localStorage.getItem('tradingTransactions')) || [];
+            transactions.push(transaction);
+            localStorage.setItem('tradingTransactions', JSON.stringify(transactions));
+        }
+        
+        // Fungsi untuk menambahkan transaksi ke tampilan portfolio
+        function addTransactionToPortfolio(transaction) {
+            const portfolioContainer = document.getElementById('portfolio-container');
+            
+            const card = document.createElement('div');
+            card.className = 'portfolio-card';
+            
+            const profitClass = transaction.profit >= 0 ? 'positive' : 'negative';
+            const profitSign = transaction.profit >= 0 ? '+' : '';
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3>${transaction.assetName}</h3>
+                    <p>${transaction.investmentType}</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>Tanggal:</strong> ${transaction.date}</p>
+                    <p><strong>Harga Beli:</strong> $${transaction.buyPrice.toFixed(2)}</p>
+                    <p><strong>Harga Jual:</strong> $${transaction.sellPrice.toFixed(2)}</p>
+                    <p><strong>Jumlah:</strong> ${transaction.quantity}</p>
+                    <div class="profit ${profitClass}">
+                        ${profitSign}$${transaction.profit.toFixed(2)} (${profitSign}${transaction.profitPercentage.toFixed(2)}%)
+                    </div>
+                </div>
+            `;
+            
+            portfolioContainer.appendChild(card);
+        }
+        
+        // Memuat transaksi yang tersimpan saat halaman dimuat
+        function loadSavedTransactions() {
+            const transactions = JSON.parse(localStorage.getItem('tradingTransactions')) || [];
+            const portfolioContainer = document.getElementById('portfolio-container');
+            
+            // Kosongkan container terlebih dahulu
+            portfolioContainer.innerHTML = '';
+            
+            // Jika tidak ada transaksi yang tersimpan
+            if (transactions.length === 0) {
+                portfolioContainer.innerHTML = '<p class="no-data">Belum ada data transaksi. Silakan tambah data profit terlebih dahulu.</p>';
+                return;
+            }
+            
+            // Tambahkan setiap transaksi ke tampilan
+            transactions.forEach(transaction => {
+                addTransactionToPortfolio(transaction);
+            });
+        }
+        
+        // Panggil fungsi untuk memuat transaksi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadSavedTransactions);
+    </script>
+</body>
+</html>
