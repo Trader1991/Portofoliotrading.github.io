@@ -32,6 +32,7 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
+            min-width: 1000px; /* Memaksa tampilan desktop */
         }
 
         .container {
@@ -265,27 +266,6 @@
             margin-top: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .portfolio-table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .admin-controls {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .admin-btn {
-                width: 100%;
-            }
-            
-            .portfolio-table th, 
-            .portfolio-table td {
-                padding: 0.5rem;
-            }
-        }
-
         /* Styling untuk data yang digabung */
         .grouped-row {
             background-color: #e8f4fc;
@@ -294,6 +274,18 @@
         
         .grouped-row td {
             border-bottom: 2px solid var(--secondary-color);
+        }
+
+        /* Tampilan desktop dipaksa */
+        @media (max-width: 1000px) {
+            body {
+                min-width: 1000px;
+                overflow-x: auto;
+            }
+            
+            .container {
+                min-width: 980px;
+            }
         }
     </style>
 </head>
@@ -323,7 +315,7 @@
                         <th>Tanggal</th>
                         <th>Profit (Rp)</th>
                         <th>Keuntungan dari Modal (%)</th>
-                        <th>Aksi</th>
+                        <th id="actionHeader">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="portfolioData">
@@ -397,6 +389,10 @@
         const portfolioData = document.getElementById('portfolioData');
         const addRowBtn = document.getElementById('addRowBtn');
         const totalProfitElem = document.getElementById('totalProfit');
+        const actionHeader = document.getElementById('actionHeader');
+
+        // Status admin
+        let isAdmin = false;
 
         // Data portofolio (disimpan di localStorage)
         let portfolioItems = JSON.parse(localStorage.getItem('portfolioItems')) || [];
@@ -415,6 +411,8 @@
             if (password === ADMIN_PASSWORD) {
                 loginModal.style.display = 'none';
                 adminPanel.style.display = 'block';
+                isAdmin = true;
+                renderPortfolioData(); // Render ulang dengan tombol hapus
                 alert('Login berhasil! Anda sekarang dapat mengedit data.');
             } else {
                 alert('Password salah! Silakan coba lagi.');
@@ -423,6 +421,8 @@
 
         logoutBtn.addEventListener('click', () => {
             adminPanel.style.display = 'none';
+            isAdmin = false;
+            renderPortfolioData(); // Render ulang tanpa tombol hapus
             alert('Anda telah logout dari panel admin.');
         });
 
@@ -488,6 +488,13 @@
                 return;
             }
             
+            // Sembunyikan kolom aksi jika bukan admin
+            if (!isAdmin) {
+                actionHeader.style.display = 'none';
+            } else {
+                actionHeader.style.display = 'table-cell';
+            }
+            
             // Urutkan berdasarkan modal kemudian nomor
             portfolioItems.sort((a, b) => {
                 if (a.modal !== b.modal) {
@@ -510,23 +517,34 @@
                     groupRow.className = 'grouped-row';
                     groupRow.innerHTML = `
                         <td>Rp${formatNumber(item.modal)}</td>
-                        <td colspan="5">Data trading dengan modal Rp${formatNumber(item.modal)}</td>
+                        <td colspan="${isAdmin ? '5' : '4'}">Data trading dengan modal Rp${formatNumber(item.modal)}</td>
                     `;
                     
                     portfolioData.appendChild(groupRow);
                 }
                 
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td></td>
-                    <td>${item.nomor}</td>
-                    <td>${item.tanggal}</td>
-                    <td class="profit">Rp${formatNumber(item.profit)}</td>
-                    <td>${item.keuntungan}%</td>
-                    <td class="delete-btn" onclick="deleteItem(${item.id})">
-                        <i class="fas fa-trash"></i>
-                    </td>
-                `;
+                
+                if (isAdmin) {
+                    row.innerHTML = `
+                        <td></td>
+                        <td>${item.nomor}</td>
+                        <td>${item.tanggal}</td>
+                        <td class="profit">Rp${formatNumber(item.profit)}</td>
+                        <td>${item.keuntungan}%</td>
+                        <td class="delete-btn" onclick="deleteItem(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </td>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <td></td>
+                        <td>${item.nomor}</td>
+                        <td>${item.tanggal}</td>
+                        <td class="profit">Rp${formatNumber(item.profit)}</td>
+                        <td>${item.keuntungan}%</td>
+                    `;
+                }
                 
                 portfolioData.appendChild(row);
             });
