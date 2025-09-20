@@ -83,6 +83,29 @@
             border-bottom: 2px solid var(--secondary-color);
         }
 
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .total-profit {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--profit-color);
+        }
+
         .portfolio-table {
             width: 100%;
             border-collapse: collapse;
@@ -112,6 +135,17 @@
         .profit {
             color: var(--profit-color);
             font-weight: bold;
+        }
+
+        .delete-btn {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .delete-btn:hover {
+            color: #c0392b;
         }
 
         .modal {
@@ -244,26 +278,11 @@
             .admin-btn {
                 width: 100%;
             }
-        }
-
-        .summary-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .summary-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .total-profit {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--profit-color);
+            
+            .portfolio-table th, 
+            .portfolio-table td {
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -282,86 +301,22 @@
             
             <div class="summary-card">
                 <h3>Total Profit</h3>
-                <div class="total-profit" id="totalProfit">Rp5,397,280.00</div>
+                <div class="total-profit" id="totalProfit">Rp0</div>
             </div>
 
             <table class="portfolio-table">
                 <thead>
                     <tr>
-                        <th>Modul</th>
+                        <th>Modal (Rp)</th>
                         <th>No</th>
                         <th>Tanggal</th>
-                        <th>Profit</th>
-                        <th>Keuntungan dari Modal</th>
-                        <th>Total Presentasi</th>
+                        <th>Profit (Rp)</th>
+                        <th>Keuntungan dari Modal (%)</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="portfolioData">
-                    <tr>
-                        <td rowspan="6">Rp10,000,000.00</td>
-                        <td>1</td>
-                        <td>9/11/2025</td>
-                        <td class="profit">Rp651,680.00</td>
-                        <td>6.52%</td>
-                        <td>6.52%</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>9/12/2025</td>
-                        <td class="profit">Rp160,000.00</td>
-                        <td>1.60%</td>
-                        <td>8.12%</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>9/13/2025</td>
-                        <td class="profit">Rp265,600.00</td>
-                        <td>2.66%</td>
-                        <td>10.77%</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>9/14/2025</td>
-                        <td class="profit">Rp224,000.00</td>
-                        <td>2.24%</td>
-                        <td>13.01%</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>9/15/2025</td>
-                        <td class="profit">Rp96,000.00</td>
-                        <td>0.96%</td>
-                        <td>13.97%</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>9/16/2025</td>
-                        <td class="profit">Rp480,000.00</td>
-                        <td>4.80%</td>
-                        <td>18.77%</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3">Rp100,000,000.00</td>
-                        <td>9</td>
-                        <td>9/17/2025</td>
-                        <td class="profit">Rp2,560,000.00</td>
-                        <td>2.56%</td>
-                        <td>3.52%</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>9/18/2025</td>
-                        <td class="profit">Rp960,000.00</td>
-                        <td>0.96%</td>
-                        <td>3.52%</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>9/19/2025</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
+                    <!-- Data akan diisi secara dinamis -->
                 </tbody>
             </table>
         </section>
@@ -376,8 +331,8 @@
 
             <form id="dataForm">
                 <div class="form-group">
-                    <label for="modul">Modul (Rp)</label>
-                    <input type="text" id="modul" required placeholder="Contoh: 10000000">
+                    <label for="modal">Modal (Rp)</label>
+                    <input type="number" id="modal" required placeholder="Contoh: 10000000">
                 </div>
                 <div class="form-group">
                     <label for="nomor">Nomor</label>
@@ -389,15 +344,7 @@
                 </div>
                 <div class="form-group">
                     <label for="profit">Profit (Rp)</label>
-                    <input type="text" id="profit" placeholder="Contoh: 500000">
-                </div>
-                <div class="form-group">
-                    <label for="keuntungan">Keuntungan dari Modal (%)</label>
-                    <input type="text" id="keuntungan" placeholder="Contoh: 5.00">
-                </div>
-                <div class="form-group">
-                    <label for="presentasi">Total Presentasi (%)</label>
-                    <input type="text" id="presentasi" placeholder="Contoh: 15.50">
+                    <input type="number" id="profit" required placeholder="Contoh: 500000">
                 </div>
                 <button type="submit"><i class="fas fa-save"></i> Simpan Data</button>
             </form>
@@ -440,6 +387,9 @@
         const addRowBtn = document.getElementById('addRowBtn');
         const totalProfitElem = document.getElementById('totalProfit');
 
+        // Data portofolio (disimpan di localStorage)
+        let portfolioItems = JSON.parse(localStorage.getItem('portfolioItems')) || [];
+
         // Event Listeners
         adminAccess.addEventListener('click', () => {
             loginModal.style.display = 'flex';
@@ -468,50 +418,37 @@
         dataForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const modul = document.getElementById('modul').value;
-            const nomor = document.getElementById('nomor').value;
+            const modalValue = parseInt(document.getElementById('modal').value);
+            const nomor = parseInt(document.getElementById('nomor').value);
             const tanggal = document.getElementById('tanggal').value;
-            const profit = document.getElementById('profit').value;
-            const keuntungan = document.getElementById('keuntungan').value;
-            const presentasi = document.getElementById('presentasi').value;
+            const profitValue = parseInt(document.getElementById('profit').value);
+            
+            // Validasi input
+            if (isNaN(modalValue) || isNaN(nomor) || isNaN(profitValue) || !tanggal) {
+                alert('Harap isi semua field dengan benar!');
+                return;
+            }
+            
+            // Hitung keuntungan dari modal (%)
+            const keuntungan = ((profitValue / modalValue) * 100).toFixed(2);
             
             // Format tanggal untuk tampilan
             const dateObj = new Date(tanggal);
             const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
             
-            // Tambahkan data baru ke tabel
-            const newRow = document.createElement('tr');
+            // Tambahkan item baru
+            const newItem = {
+                id: Date.now(),
+                modal: modalValue,
+                nomor,
+                tanggal: formattedDate,
+                profit: profitValue,
+                keuntungan
+            };
             
-            // Cek apakah modul sudah ada
-            const existingModul = Array.from(portfolioData.querySelectorAll('tr')).find(row => {
-                return row.cells[0] && row.cells[0].textContent === `Rp${formatNumber(modul)}.00`;
-            });
-            
-            if (existingModul) {
-                // Jika modul sudah ada, tambahkan baris baru tanpa kolom modul
-                newRow.innerHTML = `
-                    <td>${nomor}</td>
-                    <td>${formattedDate}</td>
-                    <td class="profit">${profit ? 'Rp' + formatNumber(profit) + '.00' : '-'}</td>
-                    <td>${keuntungan ? keuntungan + '%' : '-'}</td>
-                    <td>${presentasi ? presentasi + '%' : '-'}</td>
-                `;
-            } else {
-                // Jika modul baru, buat baris dengan kolom modul
-                newRow.innerHTML = `
-                    <td rowspan="1">Rp${formatNumber(modul)}.00</td>
-                    <td>${nomor}</td>
-                    <td>${formattedDate}</td>
-                    <td class="profit">${profit ? 'Rp' + formatNumber(profit) + '.00' : '-'}</td>
-                    <td>${keuntungan ? keuntungan + '%' : '-'}</td>
-                    <td>${presentasi ? presentasi + '%' : '-'}</td>
-                `;
-            }
-            
-            portfolioData.appendChild(newRow);
-            
-            // Update total profit
-            updateTotalProfit();
+            portfolioItems.push(newItem);
+            savePortfolioData();
+            renderPortfolioData();
             
             // Reset form
             dataForm.reset();
@@ -519,28 +456,70 @@
             alert('Data berhasil ditambahkan!');
         });
 
-        // Fungsi untuk memformat angka (1000000 -> 1,000,000)
-        function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // Fungsi untuk menyimpan data ke localStorage
+        function savePortfolioData() {
+            localStorage.setItem('portfolioItems', JSON.stringify(portfolioItems));
         }
 
-        // Fungsi untuk menghitung total profit
-        function updateTotalProfit() {
-            let total = 0;
-            const profitCells = portfolioData.querySelectorAll('td.profit');
+        // Fungsi untuk merender data portofolio
+        function renderPortfolioData() {
+            portfolioData.innerHTML = '';
             
-            profitCells.forEach(cell => {
-                if (cell.textContent !== '-') {
-                    const profitValue = parseInt(cell.textContent.replace(/[^\d]/g, ''));
-                    total += profitValue;
-                }
+            if (portfolioItems.length === 0) {
+                portfolioData.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem;">
+                            Belum ada data portofolio. Silakan tambah data melalui panel admin.
+                        </td>
+                    </tr>
+                `;
+                totalProfitElem.textContent = 'Rp0';
+                return;
+            }
+            
+            // Urutkan berdasarkan nomor
+            portfolioItems.sort((a, b) => a.nomor - b.nomor);
+            
+            let totalProfit = 0;
+            
+            portfolioItems.forEach(item => {
+                totalProfit += item.profit;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Rp${formatNumber(item.modal)}</td>
+                    <td>${item.nomor}</td>
+                    <td>${item.tanggal}</td>
+                    <td class="profit">Rp${formatNumber(item.profit)}</td>
+                    <td>${item.keuntungan}%</td>
+                    <td class="delete-btn" onclick="deleteItem(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </td>
+                `;
+                
+                portfolioData.appendChild(row);
             });
             
-            totalProfitElem.textContent = `Rp${formatNumber(total.toString())}.00`;
+            totalProfitElem.textContent = `Rp${formatNumber(totalProfit)}`;
+        }
+
+        // Fungsi untuk menghapus item
+        function deleteItem(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                portfolioItems = portfolioItems.filter(item => item.id !== id);
+                savePortfolioData();
+                renderPortfolioData();
+                alert('Data berhasil dihapus!');
+            }
+        }
+
+        // Fungsi untuk memformat angka (1000000 -> 1.000.000)
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         // Inisialisasi
-        updateTotalProfit();
+        renderPortfolioData();
     </script>
 </body>
 </html>
