@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio Trading</title>
+    <title>Portofolio Trading - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Reset dan Variabel */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
+            --profit-color: #2ecc71;
+            --loss-color: #e74c3c;
+            --light-color: #f5f5f5;
             --dark-color: #2c3e50;
-            --success-color: #2ecc71;
             --text-color: #333;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
@@ -28,137 +29,126 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: #f9f9f9;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
-            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 1.5rem;
-        }
-
-        nav ul li a {
+        header {
+            background-color: var(--primary-color);
             color: white;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        nav ul li a:hover {
-            color: var(--secondary-color);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 4rem 0;
+            padding: 1.5rem;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        .admin-access {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: var(--transition);
         }
 
-        /* Portfolio Section */
-        .section {
-            padding: 3rem 0;
+        .admin-access:hover {
+            background: #2980b9;
+        }
+
+        .portfolio-section {
+            padding: 2rem;
         }
 
         .section-title {
             text-align: center;
             margin-bottom: 2rem;
             color: var(--primary-color);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
         }
 
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .portfolio-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
+        .portfolio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
             box-shadow: var(--shadow);
-            transition: var(--transition);
         }
 
-        .portfolio-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        .portfolio-table th, .portfolio-table td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #ddd;
         }
 
-        .card-header {
-            padding: 1.5rem;
-            background: var(--primary-color);
+        .portfolio-table th {
+            background-color: var(--primary-color);
             color: white;
         }
 
-        .card-body {
-            padding: 1.5rem;
+        .portfolio-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .portfolio-table tr:hover {
+            background-color: #f1f1f1;
         }
 
         .profit {
-            font-size: 1.5rem;
+            color: var(--profit-color);
             font-weight: bold;
-            margin: 1rem 0;
         }
 
-        .positive {
-            color: var(--success-color);
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        .negative {
-            color: var(--accent-color);
-        }
-
-        /* Form Styles */
-        .form-section {
+        .modal-content {
             background: white;
             padding: 2rem;
-            border-radius: 8px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
             box-shadow: var(--shadow);
-            max-width: 600px;
-            margin: 0 auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
         }
 
         .form-group {
@@ -188,224 +178,369 @@
             cursor: pointer;
             font-size: 1rem;
             transition: var(--transition);
+            width: 100%;
         }
 
         button:hover {
             background: var(--primary-color);
         }
 
-        /* Footer */
+        .admin-panel {
+            display: none;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .admin-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .logout-btn {
+            background: var(--accent-color);
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
         footer {
             background: var(--dark-color);
             color: white;
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .header-content {
+            .portfolio-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .admin-controls {
                 flex-direction: column;
-                text-align: center;
+                gap: 10px;
             }
             
-            nav ul {
-                margin-top: 1rem;
+            .admin-btn {
+                width: 100%;
             }
-            
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .total-profit {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--profit-color);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">TradingPortfolio</div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#add-profit">Tambah Profit</a></li>
-                        <li><a href="#about">Tentang</a></li>
-                    </ul>
-                </nav>
+    <div class="container">
+        <header>
+            <div class="logo">Portofolio Trading</div>
+            <p>Pantau dan Kelola Investasi Trading Anda</p>
+            <div class="admin-access" id="adminAccess">
+                <i class="fas fa-lock"></i> Akses Admin
             </div>
-        </div>
-    </header>
+        </header>
 
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Portofolio Trading Saya</h1>
-            <p>Pantau dan kelajar perkembangan investasi trading Anda dengan mudah</p>
-        </div>
-    </section>
-
-    <section id="portfolio" class="section">
-        <div class="container">
-            <h2 class="section-title">Portofolio Saya</h2>
-            <div class="portfolio-grid" id="portfolio-container">
-                <!-- Portfolio items will be added here dynamically -->
+        <section class="portfolio-section">
+            <h2 class="section-title">Portofolio Trading Saya</h2>
+            
+            <div class="summary-card">
+                <h3>Total Profit</h3>
+                <div class="total-profit" id="totalProfit">Rp5,397,280.00</div>
             </div>
-        </div>
-    </section>
 
-    <section id="add-profit" class="section">
-        <div class="container">
-            <h2 class="section-title">Tambah Data Profit</h2>
-            <div class="form-section">
-                <form id="profit-form">
-                    <div class="form-group">
-                        <label for="asset-name">Nama Aset</label>
-                        <input type="text" id="asset-name" required placeholder="Contoh: BTC, TSLA, AAPL">
-                    </div>
-                    <div class="form-group">
-                        <label for="investment-type">Jenis Investasi</label>
-                        <select id="investment-type" required>
-                            <option value="">Pilih Jenis</option>
-                            <option value="saham">Saham</option>
-                            <option value="crypto">Cryptocurrency</option>
-                            <option value="forex">Forex</option>
-                            <option value="komoditas">Komoditas</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="buy-price">Harga Beli ($)</label>
-                        <input type="number" id="buy-price" step="0.01" required placeholder="Harga per unit saat beli">
-                    </div>
-                    <div class="form-group">
-                        <label for="sell-price">Harga Jual ($)</label>
-                        <input type="number" id="sell-price" step="0.01" required placeholder="Harga per unit saat jual">
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Jumlah Unit</label>
-                        <input type="number" id="quantity" required placeholder="Jumlah unit yang dibeli">
-                    </div>
-                    <button type="submit">Hitung & Simpan Profit</button>
-                </form>
+            <table class="portfolio-table">
+                <thead>
+                    <tr>
+                        <th>Modul</th>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Profit</th>
+                        <th>Keuntungan dari Modal</th>
+                        <th>Total Presentasi</th>
+                    </tr>
+                </thead>
+                <tbody id="portfolioData">
+                    <tr>
+                        <td rowspan="6">Rp10,000,000.00</td>
+                        <td>1</td>
+                        <td>9/11/2025</td>
+                        <td class="profit">Rp651,680.00</td>
+                        <td>6.52%</td>
+                        <td>6.52%</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>9/12/2025</td>
+                        <td class="profit">Rp160,000.00</td>
+                        <td>1.60%</td>
+                        <td>8.12%</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>9/13/2025</td>
+                        <td class="profit">Rp265,600.00</td>
+                        <td>2.66%</td>
+                        <td>10.77%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>9/14/2025</td>
+                        <td class="profit">Rp224,000.00</td>
+                        <td>2.24%</td>
+                        <td>13.01%</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>9/15/2025</td>
+                        <td class="profit">Rp96,000.00</td>
+                        <td>0.96%</td>
+                        <td>13.97%</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>9/16/2025</td>
+                        <td class="profit">Rp480,000.00</td>
+                        <td>4.80%</td>
+                        <td>18.77%</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">Rp100,000,000.00</td>
+                        <td>9</td>
+                        <td>9/17/2025</td>
+                        <td class="profit">Rp2,560,000.00</td>
+                        <td>2.56%</td>
+                        <td>3.52%</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>9/18/2025</td>
+                        <td class="profit">Rp960,000.00</td>
+                        <td>0.96%</td>
+                        <td>3.52%</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>9/19/2025</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="admin-panel" id="adminPanel">
+            <h2 class="section-title">Panel Admin</h2>
+            
+            <div class="admin-controls">
+                <button class="admin-btn" id="addRowBtn"><i class="fas fa-plus"></i> Tambah Data</button>
+                <button class="admin-btn logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
-        </div>
-    </section>
 
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">Tentang Portfolio Ini</h2>
-            <div class="form-section">
-                <p>Website ini membantu Anda melacak performa trading dan investasi. Simpan catatan profit/loss dan pantau perkembangan portfolio Anda secara visual.</p>
-                <p>Data disimpan secara lokal di browser Anda, sehingga hanya dapat diakses dari perangkat ini.</p>
+            <form id="dataForm">
+                <div class="form-group">
+                    <label for="modul">Modul (Rp)</label>
+                    <input type="text" id="modul" required placeholder="Contoh: 10000000">
+                </div>
+                <div class="form-group">
+                    <label for="nomor">Nomor</label>
+                    <input type="number" id="nomor" required>
+                </div>
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label for="profit">Profit (Rp)</label>
+                    <input type="text" id="profit" placeholder="Contoh: 500000">
+                </div>
+                <div class="form-group">
+                    <label for="keuntungan">Keuntungan dari Modal (%)</label>
+                    <input type="text" id="keuntungan" placeholder="Contoh: 5.00">
+                </div>
+                <div class="form-group">
+                    <label for="presentasi">Total Presentasi (%)</label>
+                    <input type="text" id="presentasi" placeholder="Contoh: 15.50">
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Simpan Data</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>&copy; 2023 Portofolio Trading. Hak Cipta Dilindungi.</p>
+            <p>Hanya pemilik yang dapat mengubah data portofolio.</p>
+        </footer>
+    </div>
+
+    <!-- Modal Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login Admin</h2>
+                <span class="close" id="closeLogin">&times;</span>
             </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Masukkan password admin">
+            </div>
+            <button id="loginBtn"><i class="fas fa-unlock"></i> Login</button>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 TradingPortfolio. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Fungsi untuk menangani form profit
-        document.getElementById('profit-form').addEventListener('submit', function(e) {
+        // Data password (dalam aplikasi nyata, ini harus disimpan dengan lebih aman)
+        const ADMIN_PASSWORD = "admin123";
+
+        // Elemen DOM
+        const adminAccess = document.getElementById('adminAccess');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const loginBtn = document.getElementById('loginBtn');
+        const adminPanel = document.getElementById('adminPanel');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const dataForm = document.getElementById('dataForm');
+        const portfolioData = document.getElementById('portfolioData');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const totalProfitElem = document.getElementById('totalProfit');
+
+        // Event Listeners
+        adminAccess.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeLogin.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        loginBtn.addEventListener('click', () => {
+            const password = document.getElementById('password').value;
+            if (password === ADMIN_PASSWORD) {
+                loginModal.style.display = 'none';
+                adminPanel.style.display = 'block';
+                alert('Login berhasil! Anda sekarang dapat mengedit data.');
+            } else {
+                alert('Password salah! Silakan coba lagi.');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            adminPanel.style.display = 'none';
+            alert('Anda telah logout dari panel admin.');
+        });
+
+        dataForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Ambil nilai dari form
-            const assetName = document.getElementById('asset-name').value;
-            const investmentType = document.getElementById('investment-type').value;
-            const buyPrice = parseFloat(document.getElementById('buy-price').value);
-            const sellPrice = parseFloat(document.getElementById('sell-price').value);
-            const quantity = parseInt(document.getElementById('quantity').value);
+            const modul = document.getElementById('modul').value;
+            const nomor = document.getElementById('nomor').value;
+            const tanggal = document.getElementById('tanggal').value;
+            const profit = document.getElementById('profit').value;
+            const keuntungan = document.getElementById('keuntungan').value;
+            const presentasi = document.getElementById('presentasi').value;
             
-            // Hitung profit/loss
-            const profit = (sellPrice - buyPrice) * quantity;
-            const profitPercentage = ((sellPrice - buyPrice) / buyPrice) * 100;
+            // Format tanggal untuk tampilan
+            const dateObj = new Date(tanggal);
+            const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
             
-            // Buat objek transaksi
-            const transaction = {
-                id: Date.now(), // ID unik berdasarkan timestamp
-                assetName,
-                investmentType,
-                buyPrice,
-                sellPrice,
-                quantity,
-                profit,
-                profitPercentage,
-                date: new Date().toLocaleDateString('id-ID')
-            };
+            // Tambahkan data baru ke tabel
+            const newRow = document.createElement('tr');
             
-            // Simpan ke localStorage
-            saveTransaction(transaction);
+            // Cek apakah modul sudah ada
+            const existingModul = Array.from(portfolioData.querySelectorAll('tr')).find(row => {
+                return row.cells[0] && row.cells[0].textContent === `Rp${formatNumber(modul)}.00`;
+            });
             
-            // Tambahkan ke tampilan portfolio
-            addTransactionToPortfolio(transaction);
-            
-            // Reset form
-            document.getElementById('profit-form').reset();
-            
-            // Tampilkan notifikasi
-            alert(`Data profit untuk ${assetName} berhasil disimpan!`);
-        });
-        
-        // Fungsi untuk menyimpan transaksi ke localStorage
-        function saveTransaction(transaction) {
-            let transactions = JSON.parse(localStorage.getItem('tradingTransactions')) || [];
-            transactions.push(transaction);
-            localStorage.setItem('tradingTransactions', JSON.stringify(transactions));
-        }
-        
-        // Fungsi untuk menambahkan transaksi ke tampilan portfolio
-        function addTransactionToPortfolio(transaction) {
-            const portfolioContainer = document.getElementById('portfolio-container');
-            
-            const card = document.createElement('div');
-            card.className = 'portfolio-card';
-            
-            const profitClass = transaction.profit >= 0 ? 'positive' : 'negative';
-            const profitSign = transaction.profit >= 0 ? '+' : '';
-            
-            card.innerHTML = `
-                <div class="card-header">
-                    <h3>${transaction.assetName}</h3>
-                    <p>${transaction.investmentType}</p>
-                </div>
-                <div class="card-body">
-                    <p><strong>Tanggal:</strong> ${transaction.date}</p>
-                    <p><strong>Harga Beli:</strong> $${transaction.buyPrice.toFixed(2)}</p>
-                    <p><strong>Harga Jual:</strong> $${transaction.sellPrice.toFixed(2)}</p>
-                    <p><strong>Jumlah:</strong> ${transaction.quantity}</p>
-                    <div class="profit ${profitClass}">
-                        ${profitSign}$${transaction.profit.toFixed(2)} (${profitSign}${transaction.profitPercentage.toFixed(2)}%)
-                    </div>
-                </div>
-            `;
-            
-            portfolioContainer.appendChild(card);
-        }
-        
-        // Memuat transaksi yang tersimpan saat halaman dimuat
-        function loadSavedTransactions() {
-            const transactions = JSON.parse(localStorage.getItem('tradingTransactions')) || [];
-            const portfolioContainer = document.getElementById('portfolio-container');
-            
-            // Kosongkan container terlebih dahulu
-            portfolioContainer.innerHTML = '';
-            
-            // Jika tidak ada transaksi yang tersimpan
-            if (transactions.length === 0) {
-                portfolioContainer.innerHTML = '<p class="no-data">Belum ada data transaksi. Silakan tambah data profit terlebih dahulu.</p>';
-                return;
+            if (existingModul) {
+                // Jika modul sudah ada, tambahkan baris baru tanpa kolom modul
+                newRow.innerHTML = `
+                    <td>${nomor}</td>
+                    <td>${formattedDate}</td>
+                    <td class="profit">${profit ? 'Rp' + formatNumber(profit) + '.00' : '-'}</td>
+                    <td>${keuntungan ? keuntungan + '%' : '-'}</td>
+                    <td>${presentasi ? presentasi + '%' : '-'}</td>
+                `;
+            } else {
+                // Jika modul baru, buat baris dengan kolom modul
+                newRow.innerHTML = `
+                    <td rowspan="1">Rp${formatNumber(modul)}.00</td>
+                    <td>${nomor}</td>
+                    <td>${formattedDate}</td>
+                    <td class="profit">${profit ? 'Rp' + formatNumber(profit) + '.00' : '-'}</td>
+                    <td>${keuntungan ? keuntungan + '%' : '-'}</td>
+                    <td>${presentasi ? presentasi + '%' : '-'}</td>
+                `;
             }
             
-            // Tambahkan setiap transaksi ke tampilan
-            transactions.forEach(transaction => {
-                addTransactionToPortfolio(transaction);
-            });
+            portfolioData.appendChild(newRow);
+            
+            // Update total profit
+            updateTotalProfit();
+            
+            // Reset form
+            dataForm.reset();
+            
+            alert('Data berhasil ditambahkan!');
+        });
+
+        // Fungsi untuk memformat angka (1000000 -> 1,000,000)
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        
-        // Panggil fungsi untuk memuat transaksi saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', loadSavedTransactions);
+
+        // Fungsi untuk menghitung total profit
+        function updateTotalProfit() {
+            let total = 0;
+            const profitCells = portfolioData.querySelectorAll('td.profit');
+            
+            profitCells.forEach(cell => {
+                if (cell.textContent !== '-') {
+                    const profitValue = parseInt(cell.textContent.replace(/[^\d]/g, ''));
+                    total += profitValue;
+                }
+            });
+            
+            totalProfitElem.textContent = `Rp${formatNumber(total.toString())}.00`;
+        }
+
+        // Inisialisasi
+        updateTotalProfit();
     </script>
 </body>
 </html>
