@@ -10,6 +10,7 @@
     <!-- Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
+        /* CSS styles tetap sama seperti sebelumnya */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
@@ -418,7 +419,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyCv2QUf-0iPclrUDj_xjbTjiWF7AfNZsZc",
             authDomain: "trading-portofolio-6c778.firebaseapp.com",
-            databaseURL: "https://trading-portofolio-6c778-default-rtdb.asia-southeast1.firebasedatabase.app", // PASTIKAN INI BENAR
+            databaseURL: "https://trading-portofolio-6c778-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "trading-portofolio-6c778",
             storageBucket: "trading-portofolio-6c778.firebasestorage.app",
             messagingSenderId: "136102612739",
@@ -506,8 +507,10 @@
                 nomor,
                 tanggal: formattedDate,
                 profit: profitValue,
-                keuntungan: parseFloat(keuntungan) // Pastikan ini adalah angka, bukan string
+                keuntungan: parseFloat(keuntungan)
             };
+            
+            console.log('Mencoba menyimpan data:', newItem);
             
             // Simpan ke Firebase
             const newItemRef = database.ref('portfolioItems').push();
@@ -519,7 +522,7 @@
                 })
                 .catch((error) => {
                     console.error('Error saving data:', error);
-                    alert('Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
+                    alert('Terjadi kesalahan saat menyimpan data. Silakan coba lagi. Error: ' + error.message);
                 });
         });
 
@@ -530,6 +533,7 @@
                 database.ref('portfolioItems').once('value')
                     .then((snapshot) => {
                         const data = snapshot.val();
+                        console.log('Data dari Firebase:', data);
                         renderPortfolioData(data);
                     })
                     .catch((error) => {
@@ -538,6 +542,7 @@
                             <tr>
                                 <td colspan="6" style="text-align: center; padding: 2rem; color: var(--accent-color);">
                                     <i class="fas fa-exclamation-triangle"></i> Gagal memuat data. Periksa koneksi internet Anda.
+                                    <br><small>${error.message}</small>
                                 </td>
                             </tr>
                         `;
@@ -656,11 +661,21 @@
         // Listen for changes in Firebase
         database.ref('portfolioItems').on('value', (snapshot) => {
             const data = snapshot.val();
+            console.log('Data berubah:', data);
             renderPortfolioData(data);
         });
 
+        // Test koneksi Firebase saat halaman dimuat
+        database.ref('.info/connected').on('value', (snapshot) => {
+            if (snapshot.val() === true) {
+                console.log('Terhubung ke Firebase');
+            } else {
+                console.log('Tidak terhubung ke Firebase');
+            }
+        });
+
         // Inisialisasi
-        // Data akan langsung di-render melalui listener Firebase
+        console.log('Aplikasi diinisialisasi');
     </script>
 </body>
 </html>
